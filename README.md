@@ -2,35 +2,55 @@
 
 **AI-powered WCAG accessibility scanner that generates auto-fix PRs.**
 
+![A11y](https://img.shields.io/badge/Accessibility-WCAG%202.2-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+
 ## Features
 
-- WCAG 2.2 AA compliance scanning
-- AI-generated fix suggestions
-- Auto PR creation for common issues
-- Built with FlexibleAccessible components
+- 🔍 **Deep Scanning** — Uses axe-core for comprehensive WCAG analysis
+- 🤖 **AI Fixes** — Claude-powered fix suggestions
+- 📝 **Auto PRs** — Generate fix PRs directly to GitHub
+- 📊 **Reports** — Exportable HTML/JSON reports
+- 🎯 **Targeted** — Focus on critical/serious violations first
 
-## Quick Start
+## Installation
 
 ```bash
-npm install
-npm run scan https://example.com
+npm install -g a11y-autopilot
 ```
 
-## CLI Usage
+## Usage
 
 ```bash
-npm run scan <url>          # Scan a URL
-npm run scan <url> --fix    # Generate fix PR
-npm run scan <url> --json   # JSON output
+# Scan a URL
+a11y scan https://example.com
+
+# Generate fix PR
+a11y scan https://example.com --fix --repo owner/repo
+
+# JSON output
+a11y scan https://example.com --json
+
+# Help
+a11y --help
+```
+
+## API
+
+```typescript
+import { scanUrl } from 'a11y-autopilot'
+
+const report = await scanUrl('https://example.com')
+console.log(`Found ${report.violations.length} violations`)
 ```
 
 ## Tech Stack
 
-- Node.js
-- Puppeteer + axe-core
-- Claude API (fix generation)
-- GitHub API (PR creation)
+- [axe-core](https://github.com/dequelabs/axe-core) — Accessibility testing
+- [Puppeteer](https://github.com/puppeteer/puppeteer) — Browser automation
+- [Anthropic Claude](https://anthropic.com) — AI fix generation
+- [GitHub API](https://docs.github.com/rest) — PR creation
 
 ## License
 
-MIT
+MIT © Scott Hardie
