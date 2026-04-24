@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "scan": "node src/cli.js"
+    "scan": "npx ts-node src/cli.ts"
   },
   "dependencies": {
     "next": "^14.0.0",

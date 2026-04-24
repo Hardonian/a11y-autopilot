@@ -1,5 +1,4 @@
 import puppeteer from 'puppeteer'
-import { axe, AxeResults } from 'axe-core'
 
 export interface A11yReport {
   url: string
@@ -18,23 +17,22 @@ interface Violation {
 }
 
 export async function scanUrl(url: string): Promise<A11yReport> {
-  const browser = await puppeteer.launch({ headless: true })
+  const browser = await puppeteer.launch({ headless: 'new' })
   const page = await browser.newPage()
   
-  await page.goto(url, { waitUntil: 'networkidle2' })
+  // Inject axe-core
+  await page.addScriptTag({ path: require.resolve('axe-core/axe.min.js') })
   
-  const results: AxeResults = await page.evaluate(() => {
+  await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 })
+  
+  const results = await page.evaluate(async () => {
     // @ts-ignore
-    if (typeof axe === 'undefined') {
-      throw new Error('axe-core not loaded')
-    }
-    // @ts-ignore
-    return window.axe.run()
+    return await window.axe.run()
   })
   
   await browser.close()
   
-  const violations: Violation[] = results.violations.map(v => ({
+  const violations: Violation[] = results.violations.map((v: any) => ({
     id: v.id,
     description: v.description,
     help: v.help,
